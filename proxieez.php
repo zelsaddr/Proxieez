@@ -1,25 +1,28 @@
 <?php
 // Created By Mazterin.Com
 // Change Copyright = NOOB!
+// NOT COMPATIBLE WITH PHP CMD!
 // error_reporting(0);
-if(preg_match("/GNU\/Linux/i", system("uname -a"))){
-    echo system("clear");
-}else{
-    echo system("cls");
-}
 date_default_timezone_set("Asia/Jakarta");
 class MztrProxy{
     var $fname, $check;
     public function banner(){
        $banner = $this->color("cyan", "
- ____  ____   _____  _____ _____ _____ _____
-|  _ \|  _ \ / _ \ \/ /_ _| ____| ____|__  /
-| |_) | |_) | | | \  / | ||  _| |  _|   / / 
-|  __/|  _ <| |_| /  \ | || |___| |___ / /_ 
-|_|   |_| \_\\___/_/\_\___|_____|_____/____|
+ ____  ____       _____  _____ _____ _____ _____
+|  _ \|  _ \  X  / _ \ \/ /_ _| ____| ____|__  /
+| |_) | |_) | X | | | \  / | ||  _| |  _|   / / 
+|  __/|  _ <  X | |_| /  \ | || |___| |___ / /_ 
+|_|   |_| \_\ X  \___/_/\_\___|_____|_____/____|
                           ".$this->color("hijau", "By : Mazterin.Com").
                                             "\n");
         return $banner;
+    }
+    public function CheckOS(){
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            echo $this->color("merah", "[!] Not Compatible for PHP CMD!, Try to install cygwin64 for windows User!");
+        } else {
+            echo exec("clear");
+        }
     }
     public function Check($proxy){
         if(!empty($proxy)) {
@@ -35,10 +38,7 @@ class MztrProxy{
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $data = curl_exec($ch);
-            $header = substr($data, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
-            $body = substr($data, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
             $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $info = curl_getinfo($ch);
             if($response == "0") {
                 return "DIE";
             }elseif($response == "200" && preg_match("/PROXY LIVE/i", $data)){
@@ -197,7 +197,8 @@ class MztrProxy{
 }
 
 $mztr = new MztrProxy();
-$mztr->fname = "Proxies-List_".date('d-m-Y').".txt"; // PROXY FILE NAME
-$mztr->check = "Proxies-Check_".date("d-m-Y_H").".txt"; // PROXY FILE CHECKED NAME
+$mztr->CheckOS();
+$mztr->fname = "Proxies-List_".date('d-m-Y').".txt"; // PROXY FILE NAME TO SAVE
+$mztr->check = "Proxies-Check_".date("d-m-Y_H").".txt"; // PROXY FILE CHECKED NAME TO SAVE
 $mztr->Form();
 ?>
